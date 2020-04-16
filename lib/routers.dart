@@ -3,7 +3,7 @@ import 'package:tim_demo/pages/language_page.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 
-final navGK = new GlobalKey<NavigatorState>();
+final navGK = GlobalKey<NavigatorState>();
 class Routers {
     static Router router;
 

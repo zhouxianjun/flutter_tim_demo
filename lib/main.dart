@@ -18,7 +18,7 @@ void main() async {
     // 自定义报错页面
     ErrorWidget.builder = (FlutterErrorDetails flutterErrorDetails) {
         debugPrint(flutterErrorDetails.toString());
-        return new Center(child: new Text("App错误，快去反馈给作者!"));
+        return Center(child: Text("App错误，快去反馈给作者!"));
     };
 
     // Android状态栏透明

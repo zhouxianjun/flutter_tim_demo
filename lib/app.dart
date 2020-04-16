@@ -14,11 +14,11 @@ import 'package:tencent_im_plugin/tencent_im_plugin.dart';
 
 class MyApp extends StatefulWidget {
     MyApp() {
-        final Router router = new Router();
+        final Router router = Router();
         Routers.configureRoutes(router);
     }
     @override
-    _MyAppState createState() => new _MyAppState();
+    _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
@@ -32,7 +32,7 @@ class _MyAppState extends State<MyApp> {
     Widget build(BuildContext context) {
         final AppStore appStore = Provider.of<AppStore>(context);
         return Observer(
-            builder: (_) => new MaterialApp(
+            builder: (_) => MaterialApp(
                 navigatorKey: navGK,
                 title: "flutter im demo",
                 theme: ThemeData(

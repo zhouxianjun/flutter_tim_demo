@@ -19,9 +19,9 @@ class LoadImage extends StatelessWidget {
 
     @override
     Widget build(BuildContext context) {
-        return new Container(
+        return Container(
             margin: EdgeInsets.only(bottom: 2.0),
-            child: new Image.asset(img, fit: BoxFit.cover, gaplessPlayback: true)
+            child: Image.asset(img, fit: BoxFit.cover, gaplessPlayback: true)
         );
     }
 }
