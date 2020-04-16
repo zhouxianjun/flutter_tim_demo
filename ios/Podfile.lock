@@ -1,0 +1,51 @@
+PODS:
+  - Flutter (1.0.0)
+  - HandyJSON (5.0.1)
+  - shared_preferences (0.0.1):
+    - Flutter
+  - shared_preferences_macos (0.0.1):
+    - Flutter
+  - shared_preferences_web (0.0.1):
+    - Flutter
+  - tencent_im_plugin (0.0.1):
+    - Flutter
+    - HandyJSON
+    - TXIMSDK_iOS
+  - TXIMSDK_iOS (4.7.2)
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
+  - shared_preferences_macos (from `.symlinks/plugins/shared_preferences_macos/ios`)
+  - shared_preferences_web (from `.symlinks/plugins/shared_preferences_web/ios`)
+  - tencent_im_plugin (from `.symlinks/plugins/tencent_im_plugin/ios`)
+
+SPEC REPOS:
+  trunk:
+    - HandyJSON
+    - TXIMSDK_iOS
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  shared_preferences:
+    :path: ".symlinks/plugins/shared_preferences/ios"
+  shared_preferences_macos:
+    :path: ".symlinks/plugins/shared_preferences_macos/ios"
+  shared_preferences_web:
+    :path: ".symlinks/plugins/shared_preferences_web/ios"
+  tencent_im_plugin:
+    :path: ".symlinks/plugins/tencent_im_plugin/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  HandyJSON: d45b8415c501e3affc59ca9762c1197ff0feb646
+  shared_preferences: 430726339841afefe5142b9c1f50cb6bd7793e01
+  shared_preferences_macos: f3f29b71ccbb56bf40c9dd6396c9acf15e214087
+  shared_preferences_web: 141cce0c3ed1a1c5bf2a0e44f52d31eeb66e5ea9
+  tencent_im_plugin: 3067e9b6f9dea82aab41d9dc2f99387f8ff938be
+  TXIMSDK_iOS: 0d3c292920c96ba08b6fa8efde65c7488eb436a7
+
+PODFILE CHECKSUM: 1b66dae606f75376c5f2135a8290850eeb09ae83
+
+COCOAPODS: 1.9.1
