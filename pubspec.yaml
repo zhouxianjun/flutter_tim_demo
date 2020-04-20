@@ -33,6 +33,10 @@ dependencies:
   mobx: ^1.1.1
   # 组建与状态联动
   flutter_mobx: ^1.1.0
+  # 表单元素
+  flutter_form_builder: ^3.6.1
+  # 吐司提示
+  fluttertoast: ^4.0.1
   # 全局存储
   provider: ^4.0.5
   # 本地存储

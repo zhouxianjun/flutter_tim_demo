@@ -8,7 +8,13 @@ class RootPage extends StatefulWidget {
 class _RootPageState extends State<RootPage> {
     @override
     Widget build(BuildContext context) {
-        return Scaffold();
+        return Scaffold(
+            body: Container(
+                child: Text(
+                    'root page'
+                ),
+            ),
+        );
     }
 }
 

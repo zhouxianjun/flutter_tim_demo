@@ -35,7 +35,8 @@ class _StartPageState extends State<StartPage> {
             CommonButton(
                 text: S.of(context).login,
                 margin: EdgeInsets.only(left: 10.0),
-                width: 100.0
+                width: 100.0,
+                onTap: () => Routers.router.navigateTo(context, Routers.LOGIN_PAGE),
             ),
             CommonButton(
                 text: S.of(context).register,

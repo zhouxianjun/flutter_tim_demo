@@ -9,6 +9,7 @@
   "phoneCity": "Country",
   "phoneNumber": "Phone",
   "phoneNumberHint": "Please fill in your phone number",
+  "phoneNumberError": "Please enter the correct mobile number",
   "userLoginTip": "WeChat number / QQ number / email",
   "notOpen": "Not yet open",
   "nextStep": "Next step",

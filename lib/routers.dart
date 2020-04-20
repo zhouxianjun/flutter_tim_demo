@@ -2,15 +2,21 @@ import 'dart:convert';
 import 'package:tim_demo/pages/language_page.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:tim_demo/pages/login_page.dart';
+import 'package:tim_demo/pages/select_location_page.dart';
 
 final navGK = GlobalKey<NavigatorState>();
 class Routers {
     static Router router;
 
     static const String LANGUAGE_PAGE = '/language';
+    static const String LOGIN_PAGE = '/login';
+    static const String SELECT_LOCATION_PAGE = '/select_localtion';
 
     static void configureRoutes(Router router) {
         router.define(LANGUAGE_PAGE, handler: Handler(handlerFunc: (context, params) => LanguagePage()));
+        router.define(LOGIN_PAGE, handler: Handler(handlerFunc: (context, params) => LoginPage()));
+        router.define(SELECT_LOCATION_PAGE, handler: Handler(handlerFunc: (context, params) => SelectLocationPage()));
         router.printTree();
         Routers.router = router;
     }

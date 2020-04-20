@@ -45,6 +45,7 @@ class S implements WidgetsLocalizations {
   String get passWord => "passWord";
   String get phoneCity => "Country";
   String get phoneNumber => "Phone";
+  String get phoneNumberError => "Please enter the correct mobile number";
   String get phoneNumberHint => "Please fill in your phone number";
   String get protocolName => "[ WeChat protocol ]";
   String get protocolTitle => "WeChat Software License and Service Agreement";
@@ -80,6 +81,8 @@ class $zh_CN extends S {
   String get weChatSecurityCenter => "微信安全中心";
   @override
   String get numberRegister => "手机号注册";
+  @override
+  String get phoneNumberError => "请输入正确的手机号码";
   @override
   String get emergencyFreeze => "紧急冻结";
   @override

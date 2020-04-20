@@ -9,6 +9,7 @@
   "phoneCity": "国家/地区",
   "phoneNumber": "手机号",
   "phoneNumberHint": "请填写手机号",
+  "phoneNumberError": "请输入正确的手机号码",
   "userLoginTip": "用微信号/QQ号/邮箱登录",
   "notOpen": "暂未开启",
   "nextStep": "下一步",

@@ -22,6 +22,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+    AppStore appStore;
+
     @override
     void initState() {
         super.initState();
@@ -29,8 +31,13 @@ class _MyAppState extends State<MyApp> {
     }
 
     @override
+    void didChangeDependencies() {
+        super.didChangeDependencies();
+        appStore = Provider.of<AppStore>(context);
+    }
+
+    @override
     Widget build(BuildContext context) {
-        final AppStore appStore = Provider.of<AppStore>(context);
         return Observer(
             builder: (_) => MaterialApp(
                 navigatorKey: navGK,

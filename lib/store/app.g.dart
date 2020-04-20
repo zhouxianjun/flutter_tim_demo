@@ -26,6 +26,23 @@ mixin _$AppStore on _AppStore, Store {
     }, _$localeAtom, name: '${_$localeAtom.name}_set');
   }
 
+  final _$localeNameAtom = Atom(name: '_AppStore.localeName');
+
+  @override
+  String get localeName {
+    _$localeNameAtom.context.enforceReadPolicy(_$localeNameAtom);
+    _$localeNameAtom.reportObserved();
+    return super.localeName;
+  }
+
+  @override
+  set localeName(String value) {
+    _$localeNameAtom.context.conditionallyRunInAction(() {
+      super.localeName = value;
+      _$localeNameAtom.reportChanged();
+    }, _$localeNameAtom, name: '${_$localeNameAtom.name}_set');
+  }
+
   final _$isLoginAtom = Atom(name: '_AppStore.isLogin');
 
   @override
@@ -43,10 +60,29 @@ mixin _$AppStore on _AppStore, Store {
     }, _$isLoginAtom, name: '${_$isLoginAtom.name}_set');
   }
 
+  final _$setLocaleAsyncAction = AsyncAction('setLocale');
+
+  @override
+  Future<dynamic> setLocale(LanguageDTO dto) {
+    return _$setLocaleAsyncAction.run(() => super.setLocale(dto));
+  }
+
+  final _$_AppStoreActionController = ActionController(name: '_AppStore');
+
+  @override
+  void login(BuildContext context, String phone) {
+    final _$actionInfo = _$_AppStoreActionController.startAction();
+    try {
+      return super.login(context, phone);
+    } finally {
+      _$_AppStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     final string =
-        'locale: ${locale.toString()},isLogin: ${isLogin.toString()}';
+        'locale: ${locale.toString()},localeName: ${localeName.toString()},isLogin: ${isLogin.toString()}';
     return '{$string}';
   }
 }
