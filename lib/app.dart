@@ -1,7 +1,7 @@
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobx/mobx.dart';
 import 'package:tim_demo/generated/i18n.dart';
-import 'package:tim_demo/pages/root_page.dart';
+import 'package:tim_demo/pages/root/root_page.dart';
 import 'package:tim_demo/pages/start_page.dart';
 import 'package:tim_demo/routers.dart';
 import 'package:tim_demo/store/app.dart';
