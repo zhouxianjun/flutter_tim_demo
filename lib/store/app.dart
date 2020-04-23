@@ -1,7 +1,5 @@
 import 'package:tim_demo/constant/storage_key.dart';
 import 'package:tim_demo/dto/language_dto.dart';
-import 'package:tim_demo/generated/i18n.dart';
-import 'package:tim_demo/routers.dart';
 import 'package:tim_demo/util/storage.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
