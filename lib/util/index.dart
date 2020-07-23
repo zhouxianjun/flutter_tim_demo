@@ -15,3 +15,13 @@ List<T> joinWrapper<T>(List<T> list, T wrapper(T item)) {
         return wrapper(list[index]);
     });
 }
+
+/// 判断是否网络
+bool isNetWorkImg(String img) {
+    return img.startsWith('http') || img.startsWith('https');
+}
+
+/// 判断是否资源图片
+bool isAssetsImg(String img) {
+    return img.startsWith('asset') || img.startsWith('assets');
+}

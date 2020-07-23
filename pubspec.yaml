@@ -47,6 +47,8 @@ dependencies:
   tencent_im_plugin: ^0.2.42
   # 加载动画
   flutter_spinkit: ^4.1.2
+  # 缓存图片
+  cached_network_image: 2.0.0
 
 dev_dependencies:
   flutter_test:
