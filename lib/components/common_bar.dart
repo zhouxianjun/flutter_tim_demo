@@ -12,7 +12,8 @@ class CommonBar extends StatelessWidget implements PreferredSizeWidget {
         this.titleWidget,
         this.bottom,
         this.leadingImg = '',
-        this.leadingWidget
+        this.leadingWidget,
+        this.centerTitle = false
     });
 
     final String title;
@@ -24,6 +25,7 @@ class CommonBar extends StatelessWidget implements PreferredSizeWidget {
     final Widget leadingWidget;
     final PreferredSizeWidget bottom;
     final String leadingImg;
+    final bool centerTitle;
 
     @override
     Size get preferredSize => Size(100, 50);
@@ -82,7 +84,7 @@ class CommonBar extends StatelessWidget implements PreferredSizeWidget {
             elevation: 0.0,
             brightness: Brightness.light,
             leading: leadingWidget ?? _leading(context),
-            centerTitle: false,
+            centerTitle: centerTitle,
             actions: rightDMActions ?? [Center()],
             bottom: bottom,
         );

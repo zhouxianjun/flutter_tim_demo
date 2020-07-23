@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:tim_demo/components/common_bar.dart';
 import 'package:tim_demo/components/common_button.dart';
+import 'package:tim_demo/components/loading.dart';
 import 'package:tim_demo/components/vertical_line.dart';
 import 'package:tim_demo/constant/index.dart';
 import 'package:tim_demo/generated/i18n.dart';
@@ -181,9 +182,9 @@ class _LoginPageState extends State<LoginPage> {
             color: formValidate
                 ? Color.fromRGBO(8, 191, 98, 1.0)
                 : Color.fromRGBO(226, 226, 226, 1.0),
-            onTap: () {
+            onTap: formValidate ? () {
                 appStore.login(context, _formKey.currentState.value['phone']);
-            },
+            } : () => {},
         );
     }
 

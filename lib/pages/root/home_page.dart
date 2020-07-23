@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tim_demo/components/common_bar.dart';
 import 'package:tim_demo/components/popup_dropdown.dart';
+import 'package:tim_demo/components/search_button.dart';
 import 'package:tim_demo/generated/i18n.dart';
 
 class HomePage extends StatefulWidget {
@@ -10,6 +11,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with AutomaticKeepAliveClientMixin {
+
+    loadChatData() {
+
+    }
+
     @override
     Widget build(BuildContext context) {
         super.build(context);
@@ -20,6 +26,7 @@ class _HomePageState extends State<HomePage>
         ];
         return Scaffold(
             appBar: CommonBar(
+                centerTitle: true,
                 title: S.of(context).weChat,
                 rightDMActions: <Widget>[
                     PopupDropdown<String>(
@@ -36,6 +43,18 @@ class _HomePageState extends State<HomePage>
                         ),
                     )
                 ],
+            ),
+            body: ListView.builder(
+                itemBuilder: (_, index) {
+                    return index < 1 ? SearchButton() : Container(
+                        height: 50,
+                        color: index % 2 == 0 ? Colors.white : Colors.black12,
+                        width: double.infinity,
+                        alignment: Alignment.center,
+                        child: Text("我是第${index}个item"),
+                    );
+                },
+                itemCount: 30,
             ),
         );
     }

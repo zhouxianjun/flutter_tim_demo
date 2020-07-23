@@ -38,5 +38,7 @@
   "weChat": "微信",
   "contacts": "通讯录",
   "discover": "发现",
-  "me": "我"
+  "me": "我",
+  "search": "搜索",
+  "unRegister": "手机号未注册"
 }

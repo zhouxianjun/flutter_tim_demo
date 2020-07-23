@@ -1,4 +1,6 @@
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:tencent_im_plugin/enums/log_print_level.dart';
+import 'package:tim_demo/constant/index.dart';
 import 'package:tim_demo/generated/i18n.dart';
 import 'package:tim_demo/pages/root/root_page.dart';
 import 'package:tim_demo/pages/start_page.dart';
@@ -26,7 +28,8 @@ class _MyAppState extends State<MyApp> {
     @override
     void initState() {
         super.initState();
-        TencentImPlugin.init(appid: '1400352283');
+        globalContext = this;
+        TencentImPlugin.init(appid: '1400352283', enabledLogPrint: true, logPrintLevel: LogPrintLevel.debug);
     }
 
     @override

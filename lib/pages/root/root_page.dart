@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tencent_im_plugin/entity/message_entity.dart';
+import 'package:tencent_im_plugin/tencent_im_plugin.dart';
 import 'package:tim_demo/components/tab_bar_icon.dart';
 import 'package:tim_demo/dto/tab_bar_dto.dart';
 import 'package:tim_demo/generated/i18n.dart';
@@ -12,6 +14,17 @@ class RootPage extends StatefulWidget {
 
 class _RootPageState extends State<RootPage> {
     int currentIndex = 0;
+
+    @override
+    void initState() {
+        super.initState();
+        TencentImPlugin.addListener(messageListener);
+    }
+    @override
+    void dispose() {
+        super.dispose();
+        TencentImPlugin.removeListener(messageListener);
+    }
 
     List<BottomNavigationBarItem> getBottomBarList(List<TabBarDTO> list) {
         return list.map((item) => BottomNavigationBarItem(
@@ -62,6 +75,14 @@ class _RootPageState extends State<RootPage> {
                 child: bar,
             )
         );
+    }
+
+    messageListener(ListenerTypeEnum type, params) {
+        print('接收到消息 ${type}');
+        print(params);
+        if (type == ListenerTypeEnum.NewMessages) {
+            print('收到消息');
+        }
     }
 
     @override

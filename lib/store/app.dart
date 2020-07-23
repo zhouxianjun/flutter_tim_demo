@@ -1,5 +1,11 @@
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:tencent_im_plugin/tencent_im_plugin.dart';
+import 'package:tim_demo/components/loading.dart';
 import 'package:tim_demo/constant/storage_key.dart';
+import 'package:tim_demo/constant/users.dart';
 import 'package:tim_demo/dto/language_dto.dart';
+import 'package:tim_demo/dto/user_dto.dart';
+import 'package:tim_demo/generated/i18n.dart';
 import 'package:tim_demo/util/storage.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
@@ -27,7 +33,33 @@ abstract class _AppStore with Store {
     }
 
     @action
-    void login(BuildContext context, String phone) {
+    Future<void> login(BuildContext context, String phone) async {
+        final UserDto user = users.singleWhere((element) => element.phone == phone, orElse: () => null);
+        if (user == null) {
+            Fluttertoast.showToast(
+                msg: S.of(context).unRegister,
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER
+            );
+            return;
+        }
+        Loading.show(context: context);
+        try {
+            final loginUser = await TencentImPlugin.getLoginUser();
+            print(loginUser);
+            if (loginUser == null) {
+                await TencentImPlugin.login(identifier: user.phone, userSig: user.sig);
+            }
+        } catch (e) {
+            print(e);
+            Fluttertoast.showToast(
+                msg: '登录失败',
+                backgroundColor: Colors.red,
+                textColor: Colors.white
+            );
+        } finally {
+            Loading.close();
+        }
         this.isLogin = true;
         Navigator.pop(context);
     }

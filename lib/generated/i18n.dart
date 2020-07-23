@@ -54,10 +54,12 @@ class S implements WidgetsLocalizations {
   String get readAgree => "ReadAgree ";
   String get register => "Register";
   String get retrievePW => "Retrieve";
+  String get search => "Search";
   String get selectCountry => "Select country or region";
   String get singapore => "Singapore";
   String get taiwan => "Taiwan";
   String get uS => "United States";
+  String get unRegister => "Mobile phone number is not registered";
   String get userLoginTip => "WeChat number / QQ number / email";
   String get weChat => "WeChat";
   String get weChatSecurityCenter => "Security";
@@ -96,6 +98,8 @@ class $zh_CN extends S {
   @override
   String get macao => "澳门";
   @override
+  String get search => "搜索";
+  @override
   String get protocolName => "《微信软件许可及服务协议》";
   @override
   String get userLoginTip => "用微信号/QQ号/邮箱登录";
@@ -131,6 +135,8 @@ class $zh_CN extends S {
   String get singapore => "新加坡";
   @override
   String get taiwan => "台湾";
+  @override
+  String get unRegister => "手机号未注册";
   @override
   String get phoneNumber => "手机号";
   @override

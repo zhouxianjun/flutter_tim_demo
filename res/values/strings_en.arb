@@ -38,5 +38,7 @@
   "weChat": "WeChat",
   "contacts": "Contacts",
   "discover": "Discover",
-  "me": "Me"
+  "me": "Me",
+  "search": "Search",
+  "unRegister": "Mobile phone number is not registered"
 }
