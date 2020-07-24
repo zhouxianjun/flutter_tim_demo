@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tencent_im_plugin/entity/session_entity.dart';
 import 'package:tencent_im_plugin/tencent_im_plugin.dart';
 import 'package:tim_demo/components/common_bar.dart';
@@ -6,6 +7,7 @@ import 'package:tim_demo/components/conversation_item.dart';
 import 'package:tim_demo/components/popup_dropdown.dart';
 import 'package:tim_demo/components/search_button.dart';
 import 'package:tim_demo/generated/i18n.dart';
+import 'package:tim_demo/store/im.dart';
 
 class HomePage extends StatefulWidget {
     @override
@@ -15,6 +17,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage>
     with AutomaticKeepAliveClientMixin {
     List<SessionEntity> list = [];
+    IMStore imStore;
 
     loadChatData() async {
         final list = await TencentImPlugin.getConversationList();
@@ -22,6 +25,14 @@ class _HomePageState extends State<HomePage>
             this.list = list;
         });
         print(list.length);
+    }
+
+    String get title {
+        final t = S.of(context).weChat;
+        if (imStore.unreadCount > 0) {
+            return '$t(${imStore.unreadCount})';
+        }
+        return t;
     }
 
     @override
@@ -37,22 +48,35 @@ class _HomePageState extends State<HomePage>
         TencentImPlugin.removeListener(onRefresh);
     }
 
-    onRefresh(ListenerTypeEnum type, params) {
-        if (type == ListenerTypeEnum.RefreshConversation) {
-            (params as List).forEach((item) {
-                final msg = list.singleWhere((element) => element.id == item.id);
-                print('会话id' + item.id);
-                setState(() {
-                    if (msg == null) {
-                        list.add(item);
-                    } else {
-                        msg.nickname = item.nickname;
-                        msg.faceUrl = item.faceUrl;
-                        msg.message = item.message;
-                        msg.unreadMessageNum = item.unreadMessageNum;
-                    }
-                });
+    @override
+    didChangeDependencies () {
+        super.didChangeDependencies();
+        imStore = Provider.of<IMStore>(context);
+    }
+
+    refreshConversation([List<SessionEntity> conversationList]) async {
+        if (conversationList == null) {
+            conversationList = await TencentImPlugin.getConversationList();
+        }
+        conversationList.forEach((item) {
+            final msg = list.singleWhere((element) => element.id == item.id);
+            print('会话id' + item.id);
+            setState(() {
+                if (msg == null) {
+                    list.add(item);
+                } else {
+                    msg.nickname = item.nickname;
+                    msg.faceUrl = item.faceUrl;
+                    msg.message = item.message;
+                    msg.unreadMessageNum = item.unreadMessageNum;
+                }
             });
+        });
+    }
+
+    onRefresh(ListenerTypeEnum type, params) {
+        if (type == ListenerTypeEnum.Refresh) {
+            refreshConversation();
         }
     }
 
@@ -67,7 +91,7 @@ class _HomePageState extends State<HomePage>
         return Scaffold(
             appBar: CommonBar(
                 centerTitle: true,
-                title: S.of(context).weChat,
+                title: title,
                 rightDMActions: <Widget>[
                     PopupDropdown<String>(
                         width: MediaQuery.of(context).size.width / 2.5,

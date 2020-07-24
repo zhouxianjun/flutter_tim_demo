@@ -1,8 +1,10 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:tencent_im_plugin/entity/message_entity.dart';
 import 'package:tencent_im_plugin/entity/session_entity.dart';
 import 'package:tim_demo/components/image_view.dart';
 import 'package:tim_demo/styles/index.dart';
+import 'package:tim_demo/util/index.dart';
 
 class ConversationItem extends StatefulWidget {
     final SessionEntity entity;
@@ -31,13 +33,23 @@ class _ConversationItemState extends State<ConversationItem> {
         return this.message != null ? DateTime.fromMillisecondsSinceEpoch(this.message.timestamp * 1000) : null;
     }
 
+    int get unreadCount {
+        return this.widget.entity.unreadMessageNum;
+    }
+
     Widget renderTitle() {
-        return Text(this.title);
+        return Text(
+            this.title,
+            style: TextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.w400
+            ),
+        );
     }
 
     Widget renderTime() {
         return Text(
-            this.time == null ? "" : "${this.time.year}-${this.time.month}-${this.time.day} ${this.time.hour}:${this.time.minute}:${this.time.second}",
+            this.time == null ? '' : transformTimeOfConversation(time),
             style: TextStyle(
                 color: Colors.grey,
                 fontSize: 12,
@@ -47,9 +59,39 @@ class _ConversationItemState extends State<ConversationItem> {
 
     Widget renderMessage() {
         return Text(
-            this.message != null && this.message.note != null ? this.message.note : "",
+            this.message != null && this.message.note != null ? this.message.note : '',
             maxLines: 1,
+            style: TextStyle(
+                color: Colors.grey
+            ),
             overflow: TextOverflow.ellipsis,
+        );
+    }
+
+    String get unreadCountText {
+        return unreadCount > 99 ? '...' : '$unreadCount';
+    }
+
+    Widget renderFace() {
+        final face = ImageView(
+            img: this.widget.entity.faceUrl,
+            height: 50.0,
+            width: 50.0,
+            fit: BoxFit.cover,
+        );
+
+        return Badge(
+            showBadge: unreadCount > 0,
+            padding: EdgeInsets.all(3.5),
+            position: BadgePosition.topRight(top: -6.0, right: -5.0),
+            badgeContent: Text(
+                unreadCountText,
+                style: TextStyle(
+                    fontSize: 10.0,
+                    color: Colors.white
+                ),
+            ),
+            child: face,
         );
     }
 
@@ -61,12 +103,7 @@ class _ConversationItemState extends State<ConversationItem> {
             child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                    ImageView(
-                        img: this.widget.entity.faceUrl,
-                        height: 50.0,
-                        width: 50.0,
-                        fit: BoxFit.cover,
-                    ),
+                    renderFace(),
                     Expanded(
                         child: Container(
                             padding: EdgeInsets.fromLTRB(0, 10.0, 12.0, 10.0),

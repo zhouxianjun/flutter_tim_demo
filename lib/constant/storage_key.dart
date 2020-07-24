@@ -1,6 +1,7 @@
 class StorageKeys {
     static final String languageName = "language_name";
     static final String languageCode = "language_code";
+    static final String unreadCount = "unreadCount";
     static final String account = "account";
     static final String password = "password";
     static final String hasLogged = "hasLogged";

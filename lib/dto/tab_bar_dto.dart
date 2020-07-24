@@ -5,6 +5,11 @@ class TabBarDTO {
     String icon;
     String activeIcon;
     Widget page;
+    String badge;
 
-    TabBarDTO(this.title, this.icon, this.activeIcon, this.page);
+    TabBarDTO(this.title, this.icon, this.activeIcon, this.page, [this.badge]);
+
+    bool showBadge() {
+        return badge != null;
+    }
 }

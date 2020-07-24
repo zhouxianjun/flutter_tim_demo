@@ -1,10 +1,16 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:tencent_im_plugin/entity/message_entity.dart';
+import 'package:provider/provider.dart';
+import 'package:tencent_im_plugin/entity/session_entity.dart';
 import 'package:tencent_im_plugin/tencent_im_plugin.dart';
 import 'package:tim_demo/components/tab_bar_icon.dart';
 import 'package:tim_demo/dto/tab_bar_dto.dart';
 import 'package:tim_demo/generated/i18n.dart';
+import 'package:tim_demo/pages/root/contacts_page.dart';
+import 'package:tim_demo/pages/root/discover_page.dart';
 import 'package:tim_demo/pages/root/home_page.dart';
+import 'package:tim_demo/pages/root/mine_page.dart';
+import 'package:tim_demo/store/im.dart';
 import 'package:tim_demo/styles/index.dart';
 
 class RootPage extends StatefulWidget {
@@ -14,6 +20,7 @@ class RootPage extends StatefulWidget {
 
 class _RootPageState extends State<RootPage> {
     int currentIndex = 0;
+    IMStore imStore;
 
     @override
     void initState() {
@@ -26,14 +33,30 @@ class _RootPageState extends State<RootPage> {
         TencentImPlugin.removeListener(messageListener);
     }
 
+    @override
+    didChangeDependencies () {
+        super.didChangeDependencies();
+        imStore = Provider.of<IMStore>(context);
+    }
+
+    Badge getBarBadge(TabBarDTO item, Widget child) {
+        return Badge(
+            showBadge: item.showBadge(),
+            badgeContent: Text(item.badge ?? '', style: TextStyle(color: Colors.white, fontSize: 10.0)),
+            position: BadgePosition.topRight(top: -15.0, right: -14.0),
+            padding: EdgeInsets.all(4.0),
+            child: child,
+        );
+    }
+
     List<BottomNavigationBarItem> getBottomBarList(List<TabBarDTO> list) {
         return list.map((item) => BottomNavigationBarItem(
             title: Text(
                 item.title,
                 style: TextStyle(fontSize: 12.0)
             ),
-            icon: TabBarIcon(item.icon),
-            activeIcon: TabBarIcon(item.activeIcon)
+            icon: getBarBadge(item, TabBarIcon(item.icon)),
+            activeIcon: getBarBadge(item, TabBarIcon(item.activeIcon))
         )).toList();
     }
 
@@ -70,28 +93,48 @@ class _RootPageState extends State<RootPage> {
             ),
             child: Container(
                 decoration: BoxDecoration(
-                    border: Border(top: BorderSide(color: AppColors.lineColor, width: 0.2))
+                    border: Border(top: BorderSide(color: AppColors.lineColor, width: 0.2)),
+                    color: Colors.grey[50]
                 ),
+                padding: EdgeInsets.only(top: 10.0),
                 child: bar,
             )
         );
     }
 
+    String get unreadCount {
+        return imStore.unreadCount >= 0 ? '${imStore.unreadCount}' : null;
+    }
+
+    Future<int> getUnreadCount([List<SessionEntity> conversationList]) async {
+        if (conversationList == null) {
+            conversationList = await TencentImPlugin.getConversationList();
+        }
+        if (conversationList.length <= 0) {
+            return 0;
+        }
+        return conversationList.map((e) => e.unreadMessageNum).reduce((value, element) => value += element);
+    }
+
+    resetUnreadCount([List<SessionEntity> conversationList]) async {
+        int count = await getUnreadCount(conversationList);
+        imStore.changeUnreadCount(count);
+    }
+
     messageListener(ListenerTypeEnum type, params) {
-        print('接收到消息 ${type}');
-        print(params);
-        if (type == ListenerTypeEnum.NewMessages) {
-            print('收到消息');
+        print(type);
+        if (type == ListenerTypeEnum.Refresh) {
+            resetUnreadCount();
         }
     }
 
     @override
     Widget build(BuildContext context) {
         List<TabBarDTO> tabBarList = <TabBarDTO>[
-            TabBarDTO(S.of(context).weChat, 'assets/images/tabbar_chat_c.webp', 'assets/images/tabbar_chat_s.webp', HomePage()),
-            TabBarDTO(S.of(context).contacts, 'assets/images/tabbar_contacts_c.webp', 'assets/images/tabbar_contacts_s.webp', HomePage()),
-            TabBarDTO(S.of(context).discover, 'assets/images/tabbar_discover_c.webp', 'assets/images/tabbar_discover_s.webp', HomePage()),
-            TabBarDTO(S.of(context).me, 'assets/images/tabbar_me_c.webp', 'assets/images/tabbar_me_s.webp', HomePage())
+            TabBarDTO(S.of(context).weChat, 'assets/images/tabbar_chat_c.webp', 'assets/images/tabbar_chat_s.webp', HomePage(), unreadCount),
+            TabBarDTO(S.of(context).contacts, 'assets/images/tabbar_contacts_c.webp', 'assets/images/tabbar_contacts_s.webp', ContactsPage()),
+            TabBarDTO(S.of(context).discover, 'assets/images/tabbar_discover_c.webp', 'assets/images/tabbar_discover_s.webp', DiscoverPage()),
+            TabBarDTO(S.of(context).me, 'assets/images/tabbar_me_c.webp', 'assets/images/tabbar_me_s.webp', MinePage())
         ];
         List<Widget> pages = tabBarList.map((item) => item.page).toList();
         return Scaffold(

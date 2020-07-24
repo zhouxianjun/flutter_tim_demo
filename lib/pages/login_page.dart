@@ -5,7 +5,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:tim_demo/components/common_bar.dart';
 import 'package:tim_demo/components/common_button.dart';
-import 'package:tim_demo/components/loading.dart';
 import 'package:tim_demo/components/vertical_line.dart';
 import 'package:tim_demo/constant/index.dart';
 import 'package:tim_demo/generated/i18n.dart';
