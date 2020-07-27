@@ -100,7 +100,7 @@ class _HomePageState extends State<HomePage>
                         },
                         padding: EdgeInsets.symmetric(horizontal: 10.0),
                         items: items,
-                        child: new Container(
+                        child: Container(
                             margin: EdgeInsets.symmetric(horizontal: 15.0),
                             child: new Image.asset('assets/images/add_addressicon.png',
                                 color: Colors.black, width: 22.0, fit: BoxFit.fitWidth),

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:tencent_im_plugin/tencent_im_plugin.dart';
 import 'package:tim_demo/app.dart';
 import 'package:tim_demo/store/index.dart';
 import 'package:tim_demo/util/storage.dart';
@@ -11,6 +12,12 @@ void main() async {
     WidgetsFlutterBinding.ensureInitialized();
     // 本地存储初始化
     await Storage.init();
+
+    // 初始化TIM
+    await TencentImPlugin.init(appid: '1400352283', enabledLogPrint: true);
+
+    // 尝试静默登录
+    await appStore.tryLogin();
 
     // APP入口并配置Provider
     runApp(MultiProvider(providers: providers, child: MyApp()));

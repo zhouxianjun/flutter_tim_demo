@@ -6,6 +6,7 @@ import 'package:tim_demo/constant/users.dart';
 import 'package:tim_demo/dto/language_dto.dart';
 import 'package:tim_demo/dto/user_dto.dart';
 import 'package:tim_demo/generated/i18n.dart';
+import 'package:tim_demo/store/mine.dart';
 import 'package:tim_demo/util/storage.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
@@ -15,6 +16,11 @@ part 'app.g.dart';
 class AppStore = _AppStore with _$AppStore;
 
 abstract class _AppStore with Store {
+    @observable
+    MineStore mineStore;
+
+    _AppStore(this.mineStore);
+
     @observable
     Locale locale = getLocalForStorage();
 
@@ -32,6 +38,14 @@ abstract class _AppStore with Store {
         this.localeName = dto.name;
     }
 
+    Future<bool> tryLogin() async {
+        print('尝试自动登录...');
+        bool loginOk = await mineStore.tryLogin();
+        print('自动登录结果: $loginOk');
+        this.isLogin = loginOk;
+        return loginOk;
+    }
+
     @action
     Future<void> login(BuildContext context, String phone) async {
         final UserDto user = users.singleWhere((element) => element.phone == phone, orElse: () => null);
@@ -45,11 +59,7 @@ abstract class _AppStore with Store {
         }
         Loading.show(context: context);
         try {
-            final loginUser = await TencentImPlugin.getLoginUser();
-            print(loginUser);
-            if (loginUser == null) {
-                await TencentImPlugin.login(identifier: user.phone, userSig: user.sig);
-            }
+            await mineStore.doLogin(user.phone, user.sig);
         } catch (e) {
             print(e);
             Fluttertoast.showToast(

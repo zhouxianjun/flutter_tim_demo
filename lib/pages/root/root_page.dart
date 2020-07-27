@@ -1,9 +1,11 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:tencent_im_plugin/entity/session_entity.dart';
 import 'package:tencent_im_plugin/tencent_im_plugin.dart';
 import 'package:tim_demo/components/tab_bar_icon.dart';
+import 'package:tim_demo/constant/index.dart';
 import 'package:tim_demo/dto/tab_bar_dto.dart';
 import 'package:tim_demo/generated/i18n.dart';
 import 'package:tim_demo/pages/root/contacts_page.dart';
@@ -25,6 +27,8 @@ class _RootPageState extends State<RootPage> {
     @override
     void initState() {
         super.initState();
+        globalContext = context;
+        resetUnreadCount();
         TencentImPlugin.addListener(messageListener);
     }
     @override
@@ -103,7 +107,16 @@ class _RootPageState extends State<RootPage> {
     }
 
     String get unreadCount {
-        return imStore.unreadCount >= 0 ? '${imStore.unreadCount}' : null;
+        return imStore.unreadCount > 0 ? '${imStore.unreadCount}' : null;
+    }
+
+    List<TabBarDTO> get tabBars {
+        return <TabBarDTO>[
+            TabBarDTO(S.of(context).weChat, 'assets/images/tabbar_chat_c.webp', 'assets/images/tabbar_chat_s.webp', HomePage(), unreadCount),
+            TabBarDTO(S.of(context).contacts, 'assets/images/tabbar_contacts_c.webp', 'assets/images/tabbar_contacts_s.webp', ContactsPage()),
+            TabBarDTO(S.of(context).discover, 'assets/images/tabbar_discover_c.webp', 'assets/images/tabbar_discover_s.webp', DiscoverPage()),
+            TabBarDTO(S.of(context).me, 'assets/images/tabbar_me_c.webp', 'assets/images/tabbar_me_s.webp', MinePage())
+        ];
     }
 
     Future<int> getUnreadCount([List<SessionEntity> conversationList]) async {
@@ -130,16 +143,14 @@ class _RootPageState extends State<RootPage> {
 
     @override
     Widget build(BuildContext context) {
-        List<TabBarDTO> tabBarList = <TabBarDTO>[
-            TabBarDTO(S.of(context).weChat, 'assets/images/tabbar_chat_c.webp', 'assets/images/tabbar_chat_s.webp', HomePage(), unreadCount),
-            TabBarDTO(S.of(context).contacts, 'assets/images/tabbar_contacts_c.webp', 'assets/images/tabbar_contacts_s.webp', ContactsPage()),
-            TabBarDTO(S.of(context).discover, 'assets/images/tabbar_discover_c.webp', 'assets/images/tabbar_discover_s.webp', DiscoverPage()),
-            TabBarDTO(S.of(context).me, 'assets/images/tabbar_me_c.webp', 'assets/images/tabbar_me_s.webp', MinePage())
-        ];
-        List<Widget> pages = tabBarList.map((item) => item.page).toList();
-        return Scaffold(
-            body: renderBody(pages),
-            bottomNavigationBar: renderBottomBar(bottomNavigationBar(tabBarList))
+        List<Widget> pages = tabBars.map((item) => item.page).toList();
+        return Observer(
+            builder: (_) {
+                return Scaffold(
+                    body: renderBody(pages),
+                    bottomNavigationBar: renderBottomBar(bottomNavigationBar(tabBars))
+                );
+            },
         );
     }
 }

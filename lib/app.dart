@@ -1,6 +1,4 @@
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:tencent_im_plugin/enums/log_print_level.dart';
-import 'package:tim_demo/constant/index.dart';
 import 'package:tim_demo/generated/i18n.dart';
 import 'package:tim_demo/pages/root/root_page.dart';
 import 'package:tim_demo/pages/start_page.dart';
@@ -11,7 +9,6 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:tencent_im_plugin/tencent_im_plugin.dart';
 
 class MyApp extends StatefulWidget {
     MyApp() {
@@ -28,8 +25,6 @@ class _MyAppState extends State<MyApp> {
     @override
     void initState() {
         super.initState();
-        globalContext = this;
-        TencentImPlugin.init(appid: '1400352283', enabledLogPrint: true, logPrintLevel: LogPrintLevel.debug);
     }
 
     @override

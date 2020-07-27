@@ -9,6 +9,21 @@ part of 'app.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$AppStore on _AppStore, Store {
+  final _$mineStoreAtom = Atom(name: '_AppStore.mineStore');
+
+  @override
+  MineStore get mineStore {
+    _$mineStoreAtom.reportRead();
+    return super.mineStore;
+  }
+
+  @override
+  set mineStore(MineStore value) {
+    _$mineStoreAtom.reportWrite(value, super.mineStore, () {
+      super.mineStore = value;
+    });
+  }
+
   final _$localeAtom = Atom(name: '_AppStore.locale');
 
   @override
@@ -71,6 +86,7 @@ mixin _$AppStore on _AppStore, Store {
   @override
   String toString() {
     return '''
+mineStore: ${mineStore},
 locale: ${locale},
 localeName: ${localeName},
 isLogin: ${isLogin}
