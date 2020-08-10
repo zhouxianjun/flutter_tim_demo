@@ -42,8 +42,8 @@ String transformTimeOfConversation(DateTime time) {
         return '昨天';
     }
     // 是否为一周
-    if (now.day - time.day <= 7) {
+    if (now.difference(time).inDays < 7) {
         return DateFormat('EEEE', locale).format(time);
     }
-    return DateFormat('yyyy/M/D', locale).format(time);
+    return DateFormat('yyyy/M/d', locale).format(time);
 }
