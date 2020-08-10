@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tim_demo/components/common_bar.dart';
 import 'package:tim_demo/components/image_view.dart';
+import 'package:tim_demo/components/list_item.dart';
 import 'package:tim_demo/constant/index.dart';
-import 'package:tim_demo/generated/i18n.dart';
 import 'package:tim_demo/store/mine.dart';
 import 'package:tim_demo/styles/index.dart';
 
@@ -91,6 +91,40 @@ class _MinePageState extends State<MinePage>
         );
     }
 
+    Widget renderItem(String icon, String label, VoidCallback callback) {
+        return ListItem(
+            iconPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
+            textPadding: EdgeInsets.only(right: 20.0),
+            icon: ImageView(
+                img: icon,
+                width: 30.0,
+            ),
+            text: Text(
+                label,
+                style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 18.0
+                ),
+            ),
+            right: Icon(
+                Icons.arrow_forward_ios,
+                size: 18.0,
+                color: Colors.grey,
+            ),
+            onClick: callback
+        );
+    }
+
+    List<Widget> renderOtherItems() {
+        List data = [
+            {'label': '收藏', 'icon': 'assets/images/favorite.webp'},
+            {'label': '相册', 'icon': 'assets/images/mine/ic_card_package.png'},
+            {'label': '卡片', 'icon': 'assets/images/mine/ic_card_package.png'},
+            {'label': '表情', 'icon': 'assets/images/mine/ic_emoji.png'}
+        ];
+        return data.map((item) => renderItem(item['icon'], item['label'], () { })).toList();
+    }
+
     @override
     void didChangeDependencies() {
         super.didChangeDependencies();
@@ -100,6 +134,15 @@ class _MinePageState extends State<MinePage>
     @override
     Widget build(BuildContext context) {
         super.build(context);
+        List<Widget> items = [
+            renderInfo(),
+            SizedBox(height: 10),
+            renderItem('assets/images/mine/ic_pay.png', '支付', () { }),
+            SizedBox(height: 10)
+        ];
+        items.addAll(renderOtherItems());
+        items.add(SizedBox(height: 10));
+        items.add(renderItem('assets/images/mine/ic_setting.png', '设置', () { }));
         return Scaffold(
             appBar: CommonBar(
                 backgroundColor: AppColors.bgColor,
@@ -116,9 +159,7 @@ class _MinePageState extends State<MinePage>
             backgroundColor: AppColors.appBarColor,
             body: SingleChildScrollView(
                 child: Column(
-                    children: <Widget>[
-                        renderInfo()
-                    ],
+                    children: items,
                 ),
             ),
         );
