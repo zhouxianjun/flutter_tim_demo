@@ -3,9 +3,11 @@ import 'package:tencent_im_plugin/entity/message_entity.dart';
 import 'package:tencent_im_plugin/enums/image_type.dart';
 import 'package:tencent_im_plugin/enums/message_node_type.dart';
 import 'package:tencent_im_plugin/message_node/image_message_node.dart';
+import 'package:tencent_im_plugin/message_node/location_message_node.dart';
 import 'package:tencent_im_plugin/message_node/message_node.dart';
 import 'package:tencent_im_plugin/message_node/text_message_node.dart';
 import 'package:tim_demo/components/im/MessageImage.dart';
+import 'package:tim_demo/components/im/MessageLocation.dart';
 import 'package:tim_demo/components/im/MessageText.dart';
 
 Widget getComponent(MessageEntity message) {
@@ -24,6 +26,13 @@ Widget getComponent(MessageEntity message) {
             ImageMessageNode value = node;
             return MessageImage(
                 url: value.imageData[ImageType.Original]?.url, path: value.path);
+        case MessageNodeType.Location:
+            LocationMessageNode value = node;
+            return MessageLocation(
+                desc: value.desc,
+                latitude: value.latitude,
+                longitude: value.longitude,
+            );
         case MessageNodeType.Custom:
             return MessageText(text: "[自定义节点，未指定解析规则]");
             break;

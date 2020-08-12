@@ -1,3 +1,4 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tencent_im_plugin/entity/session_entity.dart';
@@ -7,6 +8,7 @@ import 'package:tim_demo/components/conversation_item.dart';
 import 'package:tim_demo/components/popup_dropdown.dart';
 import 'package:tim_demo/components/search_button.dart';
 import 'package:tim_demo/generated/i18n.dart';
+import 'package:tim_demo/routers.dart';
 import 'package:tim_demo/store/im.dart';
 
 class HomePage extends StatefulWidget {
@@ -80,6 +82,20 @@ class _HomePageState extends State<HomePage>
         }
     }
 
+    Widget renderChatItem(SessionEntity entity) {
+        return Material(
+            child: InkWell(
+                child: ConversationItem(entity: entity),
+                onTap: () {
+                    Routers.router.navigateTo(context, Routers.getRouteUrlOfParams(Routers.CHAT_PAGE, {
+                        'id': entity.id,
+                        'typeIndex': entity.type.index
+                    }), transition: TransitionType.inFromRight);
+                },
+            ),
+        );
+    }
+
     @override
     Widget build(BuildContext context) {
         super.build(context);
@@ -110,9 +126,7 @@ class _HomePageState extends State<HomePage>
             ),
             body: ListView.builder(
                 itemBuilder: (_, index) {
-                    return index < 1 ? SearchButton() : ConversationItem(
-                        entity: list.elementAt(index - 1),
-                    );
+                    return index < 1 ? SearchButton() : renderChatItem(list.elementAt(index - 1));
                 },
                 itemCount: list.length + 1,
             ),

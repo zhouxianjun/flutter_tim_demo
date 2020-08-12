@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tim_demo/components/triangle_message_wrapper.dart';
 
 class MessageText extends StatelessWidget {
     final String text;
@@ -7,6 +8,8 @@ class MessageText extends StatelessWidget {
 
     @override
     Widget build(BuildContext context) {
-        return Text(text);
+        return TriangleMessageWrapper(
+            Text(text)
+        );
     }
 }

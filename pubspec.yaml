@@ -51,6 +51,8 @@ dependencies:
   cached_network_image: 2.0.0
   # 微标
   badges: ^1.1.1
+  # 下拉刷新，上拉加载
+  flutter_easyrefresh: ^2.1.5
 
 dev_dependencies:
   flutter_test:
