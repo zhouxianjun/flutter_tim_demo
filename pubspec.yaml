@@ -53,6 +53,10 @@ dependencies:
   badges: ^1.1.1
   # 下拉刷新，上拉加载
   flutter_easyrefresh: ^2.1.5
+  # IndexBar 列表 A-Z排序列表
+  azlistview: ^0.1.2
+  # 汉子转拼音
+  lpinyin: ^1.0.8
 
 dev_dependencies:
   flutter_test:
