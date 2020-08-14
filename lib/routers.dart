@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:tencent_im_plugin/entity/session_entity.dart';
 import 'package:tim_demo/pages/chat_page.dart';
 import 'package:tim_demo/pages/language_page.dart';
 import 'package:fluro/fluro.dart';

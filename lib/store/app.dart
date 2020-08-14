@@ -1,5 +1,4 @@
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:tencent_im_plugin/tencent_im_plugin.dart';
 import 'package:tim_demo/components/loading.dart';
 import 'package:tim_demo/constant/storage_key.dart';
 import 'package:tim_demo/constant/users.dart';

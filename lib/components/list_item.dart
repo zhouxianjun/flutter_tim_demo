@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tim_demo/components/horizontal_line.dart';
-import 'package:tim_demo/components/vertical_line.dart';
 import 'package:tim_demo/styles/index.dart';
 
 class ListItem extends StatelessWidget {

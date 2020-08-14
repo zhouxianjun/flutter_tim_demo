@@ -1,11 +1,7 @@
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mobx/mobx.dart';
 import 'package:tencent_im_plugin/entity/user_info_entity.dart';
 import 'package:tencent_im_plugin/tencent_im_plugin.dart';
-import 'package:tim_demo/components/loading.dart';
 import 'package:tim_demo/constant/storage_key.dart';
-import 'package:tim_demo/constant/users.dart';
-import 'package:tim_demo/dto/user_dto.dart';
 import 'package:tim_demo/util/storage.dart';
 
 part 'mine.g.dart';

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:tencent_im_plugin/entity/message_entity.dart';
 import 'package:tencent_im_plugin/entity/session_entity.dart';
+import 'package:tencent_im_plugin/message_node/message_node.dart';
+import 'package:tencent_im_plugin/message_node/text_message_node.dart';
 import 'package:tencent_im_plugin/tencent_im_plugin.dart';
 import 'package:tim_demo/components/common_bar.dart';
 import 'package:tim_demo/components/conversation_refresh_header.dart';
-import 'package:tim_demo/components/horizontal_line.dart';
 import 'package:tim_demo/components/message_item.dart';
-import 'package:tim_demo/styles/index.dart';
 
 const int MESSAGE_LIST_LENGTH = 10;
 
@@ -23,7 +25,13 @@ class ChatPage extends StatefulWidget {
     }
 }
 
-class _ChatPageState extends State<ChatPage> {
+class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
+    /// 消息输入框表单KEY
+    TextEditingController messageInputController = TextEditingController();
+
+    /// 滚动控制器
+    ScrollController scrollController = ScrollController();
+
     /// 聊天消息列表
     List<MessageEntity> messages;
 
@@ -50,12 +58,33 @@ class _ChatPageState extends State<ChatPage> {
     @override
     void initState() {
         super.initState();
+        WidgetsBinding.instance.addObserver(this);
         this.init();
     }
 
+    @override
+    void didChangeMetrics() {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+            if(MediaQuery.of(context).viewInsets.bottom > 0){
+                scrollToBottom();
+            }
+        });
+    }
+
+    @override
+    void dispose() {
+        super.dispose();
+        WidgetsBinding.instance.removeObserver(this);
+        scrollController.dispose();
+    }
+
     void init() async {
-        this.conversation = await TencentImPlugin.getConversation(sessionId: widget.id, sessionType: type);
-        this.messages = await TencentImPlugin.getLocalMessages(sessionId: widget.id, sessionType: type, number: MESSAGE_LIST_LENGTH);
+        this.conversation = await TencentImPlugin.getConversation(
+            sessionId: widget.id, sessionType: type);
+        this.messages = await TencentImPlugin.getLocalMessages(
+            sessionId: widget.id,
+            sessionType: type,
+            number: MESSAGE_LIST_LENGTH);
         setState(() {});
     }
 
@@ -63,11 +92,60 @@ class _ChatPageState extends State<ChatPage> {
         return MessageItem(msg, type == SessionType.Group);
     }
 
+    /// 输入框
+    Widget renderInput() {
+        return Expanded(
+            child: TextField(
+                controller: messageInputController,
+                textInputAction: TextInputAction.send,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderSide: BorderSide.none
+                    ),
+                    fillColor: Colors.white,
+                    filled: true,
+                    contentPadding: EdgeInsets.symmetric(
+                        vertical: 8, horizontal: 10),
+                    isDense: true
+                ),
+                onSubmitted: sendTextMessage,
+            )
+        );
+    }
+
     Future<void> onRefresh() async {
         int oldLength = this.length;
-        this.messages = await TencentImPlugin.getMessages(sessionId: widget.id, sessionType: type, number: length + MESSAGE_LIST_LENGTH);
+        this.messages = await TencentImPlugin.getMessages(sessionId: widget.id,
+            sessionType: type,
+            number: length + MESSAGE_LIST_LENGTH);
         this.noMore = oldLength == this.length;
         setState(() {});
+    }
+    
+    scrollToBottom() {
+        var position = scrollController.position.maxScrollExtent;
+        if (scrollController.offset == 0) {
+            print(position);
+            position += 43;
+        }
+        scrollController.jumpTo(position);
+    }
+
+    sendMessage(MessageNode node) async {
+        MessageEntity msg = await TencentImPlugin.sendMessage(sessionId: widget.id, sessionType: type, node: node);
+        messages.add(msg);
+        setState(() {});
+        scrollToBottom();
+    }
+
+    sendTextMessage(String text) async {
+        if (text == null || text.trim().length <= 0) {
+            return;
+        }
+        await sendMessage(TextMessageNode(
+            content: text.trim()
+        ));
+        messageInputController.text = '';
     }
 
     @override
@@ -82,31 +160,91 @@ class _ChatPageState extends State<ChatPage> {
                     )
                 ],
             ),
-            body: Container(
-                color: AppColors.appBarColor,
-                child: Column(
+            body: GestureDetector(
+                onTap: () {
+                    FocusScope.of(context).requestFocus(FocusNode());
+                },
+                child: Stack(
                     children: <Widget>[
-                        HorizontalLine(color: Colors.black26),
-                        Expanded(
-                            child: LayoutBuilder(
-                                builder: (_, constraints) {
-                                    return EasyRefresh.custom(
-                                        onRefresh: noMore ? null : onRefresh,
-                                        header: conversationRefreshHeader(),
-                                        slivers: <Widget>[
-                                            SliverList(
-                                                delegate: SliverChildBuilderDelegate(
-                                                        (_, index) => renderMsg(messages.elementAt(index)),
-                                                    childCount: length
-                                                ),
-                                            )
-                                        ],
-                                    );
-                                },
+                        Container(
+                            color: Color(0xffefefef),
+                            padding: EdgeInsets.fromLTRB(0, 10, 0, 60),
+                            child: EasyRefresh.custom(
+                                onRefresh: noMore ? null : onRefresh,
+                                scrollController: scrollController,
+                                header: conversationRefreshHeader(),
+                                slivers: <Widget>[
+                                    SliverList(
+                                        delegate: SliverChildBuilderDelegate(
+                                                (_, index) =>
+                                                renderMsg(
+                                                    messages.elementAt(index)),
+                                            childCount: length
+                                        ),
+                                    )
+                                ],
                             ),
+                        ),
+                        Positioned(
+                            bottom: 0,
+                            left: 0,
+                            width: MediaQuery
+                                .of(context)
+                                .size
+                                .width,
+                            child: Container(
+                                alignment: Alignment.topLeft,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 14.0, vertical: 10.0),
+                                decoration: BoxDecoration(
+                                    color: Color(0xfff7f7f7),
+                                    border: Border(top: BorderSide(
+                                        color: Colors.grey[300]))
+                                ),
+                                child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: <Widget>[
+                                        InkWell(
+                                            child: Padding(
+                                                child: Image.asset(
+                                                    'assets/images/chat/ic_voice.webp',
+                                                    width: 28),
+                                                padding: EdgeInsets.only(
+                                                    bottom: 4.0),
+                                            ),
+                                        ),
+                                        SizedBox(width: 10.0,),
+                                        renderInput(),
+                                        SizedBox(width: 10.0,),
+                                        InkWell(
+                                            child: Padding(
+                                                child: Icon(
+                                                    Icons.insert_emoticon,
+                                                    size: 28),
+                                                padding: EdgeInsets.only(
+                                                    bottom: 4.0)
+                                            ),
+                                        ),
+                                        SizedBox(width: 5.0,),
+                                        InkWell(
+                                            child: Padding(
+                                                child: Icon(
+                                                    Icons.add_circle_outline,
+                                                    size: 28),
+                                                padding: EdgeInsets.only(
+                                                    bottom: 4.0)
+                                            ),
+                                        )
+                                    ],
+                                ),
+                            )
                         )
                     ],
                 ),
+            ),
+            bottomNavigationBar: Container(
+                height: 40,
+                color: Color(0xfff7f7f7),
             ),
         );
     }

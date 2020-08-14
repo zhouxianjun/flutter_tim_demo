@@ -21,7 +21,7 @@ Widget getComponent(MessageEntity message) {
     switch (node.nodeType) {
         case MessageNodeType.Text:
             TextMessageNode value = node;
-            return MessageText(text: value.content);
+            return MessageText(text: value.content, isSelf: message.self);
         case MessageNodeType.Image:
             ImageMessageNode value = node;
             return MessageImage(

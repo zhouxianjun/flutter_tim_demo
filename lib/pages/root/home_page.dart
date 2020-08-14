@@ -90,7 +90,7 @@ class _HomePageState extends State<HomePage>
                     Routers.router.navigateTo(context, Routers.getRouteUrlOfParams(Routers.CHAT_PAGE, {
                         'id': entity.id,
                         'typeIndex': entity.type.index
-                    }), transition: TransitionType.inFromRight);
+                    }), transition: TransitionType.cupertino);
                 },
             ),
         );

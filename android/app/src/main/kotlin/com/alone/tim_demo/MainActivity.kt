@@ -1,4 +1,4 @@
-package com.example.tim_demo
+package com.alone.tim_demo
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
