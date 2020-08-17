@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -60,6 +62,7 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
         super.initState();
         WidgetsBinding.instance.addObserver(this);
         this.init();
+        TencentImPlugin.addListener(listener);
     }
 
     @override
@@ -75,6 +78,7 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
     void dispose() {
         super.dispose();
         WidgetsBinding.instance.removeObserver(this);
+        TencentImPlugin.removeListener(listener);
         scrollController.dispose();
     }
 
@@ -85,6 +89,7 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
             sessionId: widget.id,
             sessionType: type,
             number: MESSAGE_LIST_LENGTH);
+        TencentImPlugin.setRead(sessionId: widget.id, sessionType: type);
         setState(() {});
     }
 
@@ -122,18 +127,18 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
         setState(() {});
     }
     
-    scrollToBottom() {
-        var position = scrollController.position.maxScrollExtent;
-        if (scrollController.offset == 0) {
-            print(position);
-            position += 43;
-        }
-        scrollController.jumpTo(position);
+    scrollToBottom({duration = 200}) {
+        Timer(Duration(milliseconds: duration), () {
+            scrollController.animateTo(
+                scrollController.position.maxScrollExtent,
+                duration: new Duration(milliseconds: 250),
+                curve: Curves.linear);
+        });
     }
 
     sendMessage(MessageNode node) async {
         MessageEntity msg = await TencentImPlugin.sendMessage(sessionId: widget.id, sessionType: type, node: node);
-        messages.add(msg);
+        addMessage(msg);
         setState(() {});
         scrollToBottom();
     }
@@ -146,6 +151,24 @@ class _ChatPageState extends State<ChatPage> with WidgetsBindingObserver {
             content: text.trim()
         ));
         messageInputController.text = '';
+    }
+
+    addMessage(MessageEntity msg) {
+        if (messages != null) {
+            MessageEntity old = messages.firstWhere((element) => element.uniqueId == msg.uniqueId, orElse: () => null);
+            if (old == null) {
+                messages.add(msg);
+                scrollToBottom();
+            }
+        }
+    }
+
+    listener(ListenerTypeEnum type, params) {
+        if (type == ListenerTypeEnum.NewMessages) {
+            addMessage(params[0]);
+            TencentImPlugin.setRead(sessionId: widget.id, sessionType: this.type);
+            setState(() {});
+        }
     }
 
     @override
