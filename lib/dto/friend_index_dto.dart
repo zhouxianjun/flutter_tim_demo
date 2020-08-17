@@ -1,37 +1,30 @@
-import 'dart:developer';
-
-import 'package:azlistview/azlistview.dart';
-import 'package:lpinyin/lpinyin.dart';
+import 'package:dio/dio.dart';
+import 'package:fluro/fluro.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:tencent_im_plugin/entity/friend_entity.dart';
+import 'package:tencent_im_plugin/entity/session_entity.dart';
+import 'package:tim_demo/dto/contacts_item_dto.dart';
+import 'package:tim_demo/routers.dart';
 
-class FriendIndexDTO extends ISuspensionBean {
-    String nikeName;
+typedef VoidCallback = dynamic Function();
+
+class FriendIndexDTO extends ContactsItemDTO {
     String id;
-    String faceUrl;
-    String indexTag;
+    BuildContext _context;
 
-    FriendIndexDTO({this.nikeName, this.id, this.faceUrl, this.indexTag = '#'}) : assert(id != null);
-
-    FriendIndexDTO.fromEntity(FriendEntity entity) {
-        this.nikeName = entity.userInfoEntity.nickName;
+    FriendIndexDTO.fromEntity(FriendEntity entity, BuildContext context) : super(
+        name: entity.userInfoEntity.nickName,
+        icon: entity.userInfoEntity.faceUrl ?? ''
+    ) {
         this.id = entity.userInfoEntity.identifier;
-        this.faceUrl = entity.userInfoEntity.faceUrl;
-        this.indexTag = _parseTag();
+        this._context = context;
+        this.onClick = toChat;
     }
 
-    _parseTag() {
-        try {
-            String pinyin = PinyinHelper.getPinyinE(this.nikeName);
-            String tag = pinyin.substring(0, 1).toUpperCase();
-            return RegExp("[A-Z]").hasMatch(tag) ? tag : '#';
-        } catch (e) {
-            log('获取昵称拼音失败', error: e);
-            return '#';
-        }
-    }
-
-    @override
-    String getSuspensionTag() {
-        return indexTag;
+    toChat() {
+        Routers.router.navigateTo(_context, Routers.getRouteUrlOfParams(Routers.CHAT_PAGE, {
+            'id': this.id,
+            'typeIndex': SessionType.C2C.index
+        }), transition: TransitionType.cupertino);
     }
 }
