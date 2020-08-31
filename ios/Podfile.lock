@@ -2,12 +2,19 @@ PODS:
   - Flutter (1.0.0)
   - flutter_keyboard_visibility (0.0.1):
     - Flutter
+  - flutter_qiniu (0.1.3):
+    - Flutter
+    - Qiniu
   - fluttertoast (0.0.2):
     - Flutter
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
   - HandyJSON (5.0.1)
+  - HappyDNS (0.3.17)
+  - image_cropper (0.0.3):
+    - Flutter
+    - TOCropViewController (~> 2.5.4)
   - image_picker (0.0.1):
     - Flutter
   - path_provider (0.0.1):
@@ -16,6 +23,8 @@ PODS:
     - Flutter
     - PhoneNumberKit/PhoneNumberKitCore (~> 3.2.0)
   - PhoneNumberKit/PhoneNumberKitCore (3.2.0)
+  - Qiniu (7.4.3):
+    - HappyDNS (~> 0.3.17)
   - shared_preferences (0.0.1):
     - Flutter
   - sqflite (0.0.1):
@@ -25,12 +34,15 @@ PODS:
     - Flutter
     - HandyJSON
     - TXIMSDK_iOS (= 4.6.58)
+  - TOCropViewController (2.5.4)
   - TXIMSDK_iOS (4.6.58)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_keyboard_visibility (from `.symlinks/plugins/flutter_keyboard_visibility/ios`)
+  - flutter_qiniu (from `.symlinks/plugins/flutter_qiniu/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
+  - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - phone_number (from `.symlinks/plugins/phone_number/ios`)
@@ -42,7 +54,10 @@ SPEC REPOS:
   trunk:
     - FMDB
     - HandyJSON
+    - HappyDNS
     - PhoneNumberKit
+    - Qiniu
+    - TOCropViewController
     - TXIMSDK_iOS
 
 EXTERNAL SOURCES:
@@ -50,8 +65,12 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_keyboard_visibility:
     :path: ".symlinks/plugins/flutter_keyboard_visibility/ios"
+  flutter_qiniu:
+    :path: ".symlinks/plugins/flutter_qiniu/ios"
   fluttertoast:
     :path: ".symlinks/plugins/fluttertoast/ios"
+  image_cropper:
+    :path: ".symlinks/plugins/image_cropper/ios"
   image_picker:
     :path: ".symlinks/plugins/image_picker/ios"
   path_provider:
@@ -68,18 +87,23 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
+  flutter_qiniu: 858fb262337e9503c229a644faec78d808f8c80f
   fluttertoast: b644586ef3b16f67fae9a1f8754cef6b2d6b634b
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   HandyJSON: d45b8415c501e3affc59ca9762c1197ff0feb646
+  HappyDNS: 848ef73e24f2b0e2752064223ce2dc0dd88900ea
+  image_cropper: c8f9b4157933c7bb965a66d1c5e6c8fd408c6eb4
   image_picker: 9c3312491f862b28d21ecd8fdf0ee14e601b3f09
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   phone_number: b545f5b7d9711bec0f020c7df43ae5a82119f4ad
   PhoneNumberKit: df411d46177d1492da84e10b6c093846dd861452
+  Qiniu: 81bbc90dc6c387ea32a244f9070bc7cf08638ab5
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
   tencent_im_plugin: a055ed155fd2cae7f006e756dbec96255b4aa0a3
+  TOCropViewController: 2a1ae1242600b1f2d996fd91a5268b2309a33b5c
   TXIMSDK_iOS: d4231ccd8a045f54ca04d008dba46fdbf25687fb
 
-PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+PODFILE CHECKSUM: a75497545d4391e2d394c3668e20cfb1c2bbd4aa
 
 COCOAPODS: 1.9.1
