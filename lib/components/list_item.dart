@@ -17,7 +17,7 @@ class ListItem extends StatelessWidget {
   final double bottomLineWidth;
 
   const ListItem(
-      {this.iconPadding,
+      {this.iconPadding = EdgeInsets.zero,
       this.textPadding,
       this.bottomLine = true,
       this.margin,

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:tim_demo/pages/add_friend_page.dart';
 import 'package:tim_demo/pages/chat_page.dart';
 import 'package:tim_demo/pages/language_page.dart';
 import 'package:tim_demo/pages/login_page.dart';
@@ -20,6 +21,7 @@ class Routers {
   static const String CHAT_PAGE = '/chat_localtion';
   static const String USER_PROFILE = '/user_profile';
   static const String USER_FACE = '/user_face';
+  static const String ADD_FRIEND = '/add_friend';
 
   static void configureRoutes(Router router) {
     router.define(LANGUAGE_PAGE,
@@ -33,6 +35,8 @@ class Routers {
         handler: Handler(handlerFunc: (context, params) => UserProfile()));
     router.define(USER_FACE,
         handler: Handler(handlerFunc: (context, params) => UserFace()));
+    router.define(ADD_FRIEND,
+        handler: Handler(handlerFunc: (context, params) => AddFriendPage()));
     router.define(CHAT_PAGE,
         handler: Handler(
             handlerFunc: (context, params) => ChatPage(

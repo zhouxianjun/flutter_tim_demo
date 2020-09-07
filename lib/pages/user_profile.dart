@@ -86,7 +86,6 @@ class _UserProfile extends State<UserProfile> {
     List<Widget> itemList = items.map((e) => renderItem(e)).toList();
     itemList.add(SizedBox(height: 10));
     itemList.addAll(others.map((e) => renderItem(e)));
-    print(mineStore.faceUrl);
     return Scaffold(
       appBar: CommonBar(
         title: '个人信息',
