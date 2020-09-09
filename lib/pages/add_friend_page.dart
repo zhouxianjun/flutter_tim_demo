@@ -5,6 +5,7 @@ import 'package:tim_demo/components/common_bar.dart';
 import 'package:tim_demo/components/image_view.dart';
 import 'package:tim_demo/components/list_item.dart';
 import 'package:tim_demo/components/search_button.dart';
+import 'package:tim_demo/pages/search_page.dart';
 import 'package:tim_demo/store/mine.dart';
 import 'package:tim_demo/styles/index.dart';
 
@@ -93,7 +94,17 @@ class _AddFriendPage extends State<AddFriendPage> {
   @override
   Widget build(BuildContext context) {
     List<Widget> list = [
-      SearchButton(text: '微信号/手机号'),
+      SearchButton(
+          text: '微信号/手机号',
+          callback: () {
+            showASearch(
+                context: context,
+                delegate: SearchPage(onSearch: (value) async {
+                  return Container(
+                    child: Text(value),
+                  );
+                }));
+          }),
       Container(
         color: AppColors.appBarColor,
         padding: EdgeInsets.fromLTRB(0, 10.0, 0, 30.0),
